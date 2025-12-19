@@ -82,7 +82,7 @@ if submitted and query.strip():
         st.warning("No tracks found. Try a different vibe.")
     else:
         # Mobile-friendly column layout
-        screen_width = st.experimental_get_query_params().get("screen_width", [0])[0]
+        screen_width = st.query_params.get("screen_width", [0])[0]
         try:
             screen_width = int(screen_width)
         except:
@@ -93,7 +93,7 @@ if submitted and query.strip():
 
         for idx, track in enumerate(tracks):
             with cols[idx % cols_count]:
-                st.image(track["image"], use_column_width=True)
+                st.image(track["image"], width=220)  
                 st.markdown(f"🎵 **{track['name']}**")
                 st.markdown(f"💛 *{track['artist']}*")
                 st.caption(f"Album: {track['album']}")
