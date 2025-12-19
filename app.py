@@ -131,6 +131,7 @@ def display_footer():
         </p>
         <p>Made with ❤️ for music enthusiasts</p>
         <p>by <strong>Sachin Prabhu</strong></p>
+        <p>🔗 <a href='https://github.com/sachinprabhu007/VibePulse' target='_blank'>View on GitHub</a></p>
     </div>
     """.format(platform_html=platform_html),
     unsafe_allow_html=True
