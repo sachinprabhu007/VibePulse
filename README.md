@@ -17,6 +17,13 @@ Describe how you feel — calm, energetic, focused, rainy evening — and VibePu
 
 ---
 
+## Demo
+Try it on - https://vibepulse-acrn.onrender.com/
+
+https://github.com/user-attachments/assets/8fc88902-ed6d-4b33-ad1f-4f4da63fe1ca
+
+
+
 ## 🧠 How It Works
 
 1. User enters a mood or vibe
