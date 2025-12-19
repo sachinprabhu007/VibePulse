@@ -1,8 +1,6 @@
 import os
 import random
 import logging
-import time
-
 import streamlit as st
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -33,15 +31,12 @@ def get_spotify_client():
 
 def search_tracks(query):
     sp = get_spotify_client()
-
-    # Fetch extra results so each search feels fresh
-    response = sp.search(q=query, type="track", limit=30)
+    response = sp.search(q=query, type="track", limit=10)  # reduced limit for mobile
     items = response.get("tracks", {}).get("items", [])
 
     random.shuffle(items)
-
     tracks = []
-    for t in items[:10]:
+    for t in items:
         tracks.append({
             "name": t["name"],
             "artist": t["artists"][0]["name"],
@@ -49,7 +44,6 @@ def search_tracks(query):
             "url": t["external_urls"]["spotify"],
             "image": t["album"]["images"][0]["url"]
         })
-
     return tracks
 
 # Page settings
@@ -58,10 +52,6 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="collapsed"
 )
-
-# Tiny delay and placeholder to force mobile browsers to render immediately
-time.sleep(0.1)
-st.empty()
 
 st.title("🌟🎧 VibePulse: Tune Into Your Mood 🎵🎹")
 st.caption("Type a mood, genre, or feeling — we will find the music that fits it.")
@@ -79,42 +69,31 @@ with st.form("search_form"):
     submitted = st.form_submit_button("🎶 Find my music")
 
 if submitted and query.strip():
-
-    # Log only when a new query is submitted
     if st.session_state.last_query != query:
         logging.info(f"User searched for: {query}")
         st.session_state.last_query = query
 
-    # Spinner disappears automatically when done
     with st.spinner("🎧 Finding the right vibes for you..."):
         tracks = search_tracks(query)
 
     logging.info(f"Found {len(tracks)} tracks for query '{query}'")
-    logging.info(f"Tracks data: {tracks}")
 
     if not tracks:
         st.warning("No tracks found. Try a different vibe.")
     else:
-        # Mobile-friendly: stack columns on narrow screens
+        # Mobile-friendly column layout
+        screen_width = st.experimental_get_query_params().get("screen_width", [0])[0]
         try:
-            import streamlit.components.v1 as components
-            components.html("""
-                <style>
-                @media (max-width: 600px) {
-                    div[data-testid="stVerticalBlock"] > div[role="list"] {
-                        flex-direction: column !important;
-                    }
-                }
-                </style>
-            """, height=0)
+            screen_width = int(screen_width)
         except:
-            pass
+            screen_width = 0
 
-        cols = st.columns(2)
+        cols_count = 1 if screen_width and screen_width < 600 else 2
+        cols = st.columns(cols_count)
 
         for idx, track in enumerate(tracks):
-            with cols[idx % 2]:
-                st.image(track["image"], width=220)
+            with cols[idx % cols_count]:
+                st.image(track["image"], use_column_width=True)
                 st.markdown(f"🎵 **{track['name']}**")
                 st.markdown(f"💛 *{track['artist']}*")
                 st.caption(f"Album: {track['album']}")
@@ -133,7 +112,6 @@ def display_footer():
         platform = None
         platform_link = None
 
-    # If platform is None (local), not shown on UI
     platform_html = f" &amp; <a href='{platform_link}' target='_blank'>{platform}</a>" if platform else ""
 
     st.markdown("""
