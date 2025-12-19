@@ -18,3 +18,9 @@ venv/
 
 # Logs
 *.log
+
+# Ignore version_2 completely
+version_2/
+
+# Ignore cache in version_1
+version_1/.cache/

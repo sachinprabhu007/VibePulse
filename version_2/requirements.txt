@@ -1,4 +1,0 @@
-streamlit>=1.25.0          # UI, spinner, text input, image display
-spotipy>=2.25.2             # Spotify API access
-python-dotenv>=1.0.0        # Local env vars for API keys
-google-genai>=0.13.0        # Gemini Flash 2.5 SDK (supported)

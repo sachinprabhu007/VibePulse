@@ -1,6 +1,0 @@
-.env
-.cache/
-__pycache__/
-*.log
-*.pyc
-.vscode/
