@@ -59,7 +59,8 @@ def search_tracks(query):
 # Page settings
 st.set_page_config(
     page_title="VibePulse",
-    layout="wide"
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
 st.title("🌟🎧 VibePulse: Tune Into Your Mood 🎵🎹")
@@ -97,6 +98,21 @@ if submitted and query.strip():
     if not tracks:
         st.warning("No tracks found. Try a different vibe.")
     else:
+        # Mobile-friendly: stack columns on narrow screens
+        try:
+            import streamlit.components.v1 as components
+            components.html("""
+                <style>
+                @media (max-width: 600px) {
+                    div[data-testid="stVerticalBlock"] > div[role="list"] {
+                        flex-direction: column !important;
+                    }
+                }
+                </style>
+            """, height=0)
+        except:
+            pass
+
         cols = st.columns(2)
 
         for idx, track in enumerate(tracks):
