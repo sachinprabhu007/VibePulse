@@ -1,16 +1,20 @@
-# Ignore version_2 completely
-version_2/
-
-# Ignore log files
-*.log
-logs/
+# Environment variables (secrets)
+.env
 
 # Python cache
 __pycache__/
 *.pyc
 
-# Environment files
-.env
+# Virtual environments
+.venv/
+env/
+venv/
 
-# Ignore any cache folders
-version_1/.cache/        
+# macOS system files
+.DS_Store
+
+# Jupyter Notebook checkpoints (if any)
+.ipynb_checkpoints/
+
+# Logs
+*.log
