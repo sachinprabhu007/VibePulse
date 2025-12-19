@@ -24,3 +24,6 @@ version_2/
 
 # Ignore cache in version_1
 version_1/.cache/
+
+# Ignore cache
+.cache/
