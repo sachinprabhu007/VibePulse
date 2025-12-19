@@ -1,12 +1,12 @@
 import os
 import random
 import logging
+import time
 
 import streamlit as st
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from dotenv import load_dotenv
-
 
 # Load environment variables
 load_dotenv()
@@ -14,14 +14,12 @@ load_dotenv()
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 
-
 # Logging setup
 logging.basicConfig(
     filename="app.log",
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
 
 # Create and cache Spotify client (created once per session)
 @st.cache_resource
@@ -32,7 +30,6 @@ def get_spotify_client():
             client_secret=SPOTIFY_CLIENT_SECRET
         )
     )
-
 
 def search_tracks(query):
     sp = get_spotify_client()
@@ -55,7 +52,6 @@ def search_tracks(query):
 
     return tracks
 
-
 # Page settings
 st.set_page_config(
     page_title="VibePulse",
@@ -63,14 +59,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Tiny delay and placeholder to force mobile browsers to render immediately
+time.sleep(0.1)
+st.empty()
+
 st.title("🌟🎧 VibePulse: Tune Into Your Mood 🎵🎹")
 st.caption("Type a mood, genre, or feeling — we will find the music that fits it.")
-
 
 # Session state to prevent duplicate logs on reruns
 if "last_query" not in st.session_state:
     st.session_state.last_query = None
-
 
 # Search form (Enter key works)
 with st.form("search_form"):
@@ -79,7 +77,6 @@ with st.form("search_form"):
         placeholder="meditative, pop, rainy evening, focus, workout..."
     )
     submitted = st.form_submit_button("🎶 Find my music")
-
 
 if submitted and query.strip():
 
